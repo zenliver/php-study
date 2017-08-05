@@ -54,28 +54,153 @@ $(function () {
     });
 
     // 返回顶部
-    $(window).load(function () {
-        var elevator = new Elevator({
-            element: document.querySelector(".footer-backtotop img"),
-            duration: 600, // milliseconds
-            endCallback: function () {
-                // $("body").animateCss("bounce");
-            }
-        });
+    // $(window).load(function () {
+    //     var elevator = new Elevator({
+    //         element: document.querySelector(".footer-backtotop img"),
+    //         duration: 600, // milliseconds
+    //         endCallback: function () {
+    //             // $("body").animateCss("bounce");
+    //         }
+    //     });
+    // });
+
+    // 文章删除确认
+    $(".admin_article_del a").click(function () {
+        var articleTitle = $(this).parent().siblings(".admin_article_title").children().html();
+        var userSelect = confirm('您确定要删除'+'\n'+'" '+articleTitle+' "'+'\n'+'这篇文章吗？');
+        if (userSelect == false) {
+            event.preventDefault();
+        }
     });
 
+    // 批量删除文章
+
+        // 选中标记
+        $(".admin_article_checkbox input").click(function () {
+            event.stopPropagation();
+            $(this).toggleClass("admin_article_checkbox_checked");
+            $(this).parentsUntil($(".admin_article_list"),"tr").toggleClass("admin_article_list_tr_checked");
+        });
+
+        // 批量选中功能
+
+            // 全选
+            $(".admin_article_checkbox_all").click(function () {
+                $(".admin_article_checkbox input").each(function () {
+                    if ($(this).is(":checked") == false) {
+                        $(this).trigger("click");
+                    }
+                });
+            });
+            // 反选
+            $(".admin_article_checkbox_inverse").click(function () {
+                $(".admin_article_checkbox input").trigger("click");
+            });
+            // 全不选
+            $(".admin_article_checkbox_none").click(function () {
+                $(".admin_article_checkbox input").each(function () {
+                    if ($(this).is(":checked")) {
+                        $(this).trigger("click");
+                    }
+                });
+            });
+
+
+        // 批量删除功能
+        $(".admin_article_list_batchdel button").click(function () {
+            // event.preventDefault();
+            var idStr = "";
+            $(".admin_article_checkbox_checked").each(function () {
+                idStr += $(this).attr("value")+",";
+            });
+            console.log(idStr);
+            var idStrNew = idStr.slice(0,-1);
+            console.log(idStrNew);
+
+            if (idStrNew == "") {
+                alert("没有选中任何文章！");
+            } else {
+                var userSelect = confirm("您确定要删除选中的文章吗？");
+                if (userSelect) {
+                    $.ajax({
+                        url: '/php-study/admin/article_delete_batch.php',
+                        type: 'GET',
+                        dataType: 'html',
+                        data: {id: idStrNew}
+                    })
+                    .done(function(data) {
+                        console.log("success");
+                        // alert("批量删除成功！");
+                        $("body").append('<div id="article_delete_message"></div>');
+                        $("#article_delete_message").append(data);
+                        $("#article_delete_message").remove();
+                        // window.location.reload();
+                        $(".admin_article_checkbox_checked").each(function () {
+                            $(this).parentsUntil($(".admin_article_list"),"tr").remove();
+                        });
+                    })
+                    .fail(function() {
+                        console.log("error");
+                    })
+                    .always(function() {
+                        console.log("complete");
+                    });
+                }
+
+            }
+
+        });
+
+
+    // 前台搜索当关键词为空时提示
+
+    // 删除字符串中的空格
+    function trim(str){ //删除左右两端的空格
+　　     return str.replace(/(^\s*)|(\s*$)/g, "");
+　　 }
+　　 function ltrim(str){ //删除左边的空格
+　　     return str.replace(/(^\s*)/g,"");
+　　 }
+　　 function rtrim(str){ //删除右边的空格
+　　     return str.replace(/(\s*$)/g,"");
+　　 }
+
+    // $(".index_main_search_btn").click(function (e) { // 使用提交按钮的点击事件来判断在搜索结果页面效果不好
+    //     var serchKeyword = $("#index_main_search_keyword").val();
+    //     console.log(serchKeyword);
+    //     if (serchKeyword == "") {
+    //         e.preventDefault();
+    //         // alert("关键词不能为空啊啊啊啊啊！");
+    //         $("#index_main_search_keyword").attr("placeholder","关键词不能为空哦！").focus();
+    //     }
+    // });
+
+    $(".index_main_search form").submit(function (e) { // 使用表单的提交事件来判断效果更好，在所有页面都有效
+        var serchKeyword = $("#index_main_search_keyword").val();
+        var serchKeywordProcessed = trim(serchKeyword);
+        console.log(serchKeywordProcessed);
+        if (serchKeywordProcessed == "") {
+            e.preventDefault();
+            // alert("关键词不能为空啊啊啊啊啊！");
+            $(".index_main_search_message").html('关键词不能为空哦！');
+        }
+    });
+
+    $("#index_main_search_keyword").focus(function () {
+        $(".index_main_search_message").empty();
+    });
 
 
     // sr动画
 
         // 启动sr
-        window.sr = ScrollReveal({
-            reset: true,
-            mobile: true,
-            easing: 'ease',
-            distance: '30px',
-            scale: 1
-        });
+        // window.sr = ScrollReveal({
+        //     reset: true,
+        //     mobile: true,
+        //     easing: 'ease',
+        //     distance: '30px',
+        //     scale: 1
+        // });
 
 
 

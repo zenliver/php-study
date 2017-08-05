@@ -11,9 +11,7 @@
             </div>
             <div class="collapse navbar-collapse" id="collapse-menu">
                 <ul class="nav navbar-nav pull-right">
-                    <li class="active"><a href="./">Home</a></li>
-                    <li><a href="#">ABOUT</a></li>
-                    <li><a href="#">CONTACT</a></li>
+                    <li><a href="/php-study/admin/">ADMIN</a></li>
                 </ul>
             </div>
         </div>
