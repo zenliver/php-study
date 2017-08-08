@@ -13,18 +13,18 @@
 
     if (empty($article_title)) {
         echo '<script>alert("标题不能为空！");location.href = "./article_add.php";</script>';
-    }
-    if (empty($article_desc)) {
+    } else if (empty($article_desc)) {
         echo '<script>alert("摘要不能为空！");location.href = "./article_add.php";</script>';
-    }
-
-    $sql_insert = "insert into article(article_title,article_author,article_desc,article_content,article_date) values('$article_title','$article_author','$article_desc','$article_content','$article_date')";
-
-    if (mysql_query($sql_insert)) {
-        echo '<script>alert("文章发布成功！");location.href="./"</script>';
+    } else if (empty($article_content)) {
+        echo '<script>alert("内容不能为空！");location.href = "./article_add.php";</script>';
     } else {
-        echo '<script>alert("文章发布失败！");location.href="./article_add.php"</script>';
-    }
+        $sql_insert = "insert into article(article_title,article_author,article_desc,article_content,article_date) values('$article_title','$article_author','$article_desc','$article_content','$article_date')";
 
+        if (mysql_query($sql_insert)) {
+            echo '<script>alert("文章发布成功！");location.href="./"</script>';
+        } else {
+            echo '<script>alert("文章发布失败！");location.href="./article_add.php"</script>';
+        }
+    }
 
 ?>

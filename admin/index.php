@@ -81,7 +81,23 @@
                 <div class="col-md-10">
                     <div class="admin_content">
                         <h3 style="margin-bottom: 30px;">文章列表</h3>
+                        <div class="admin_search">
+                            <form class="form-horizontal" role="form" action="#" method="get">
+                                <div class="form-group">
+                                    <label for="admin_search_keyword" class="col-sm-2 control-label text-left" style="text-align:center;">文章搜索：</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="keyword" class="form-control" id="admin_search_keyword" placeholder="">
+                                        <div class="admin_search_message"></div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="submit" class="btn btn-default admin_search_btn">搜索</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                         <div class="admin_article_list">
+
+
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover">
                                     <thead>
@@ -131,6 +147,8 @@
                                 </ul>
 
                             </div>
+
+
                         </div>
                     </div>
                 </div>
